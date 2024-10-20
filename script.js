@@ -91,6 +91,16 @@ const playSong = (id) =>{
   const song = userData?.songs.find((song) => song.id === id);
   audio.src = song.src;
   audio.title = song.title;
+  if(userData?.currentSong === null || userData?.currentSong.id !== song.id){
+    Audio.currentTime = 0;
+ } else {
+     Audio.currentTime = userData?.currentTime;
+ }
+ userData.currentSong = song;
+
+ // Add the "playing" class to the playButton
+ playButton.classList.add("playing");
+ Audio.play();
 }
 
 
@@ -151,3 +161,10 @@ return userData?.songs;
 
 }
 renderSongs(sortSongs());  
+
+
+playButton.addEventListener("click", () => {
+ if(userData?.currentSong === null){
+  playSong(userData?.songs[0].id);
+ }
+});
